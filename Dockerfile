@@ -4,4 +4,5 @@ FROM openjdk:8
 COPY --from=apache/beam_java8_sdk:2.60.0 /opt/apache/beam /opt/apache/beam
 
 # Set the entrypoint to Apache Beam SDK launcher.
+
 ENTRYPOINT ["/opt/apache/beam/boot"]

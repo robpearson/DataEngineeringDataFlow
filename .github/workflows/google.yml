@@ -1,0 +1,57 @@
+name: 'Build and Push to GCP+Octopus'
+
+on:
+  push:
+    branches:
+      - 'main'
+      - 'DATA-**'
+
+env:
+  PROJECT_ID: 'robpearson-demo' 
+  GAR_LOCATION: 'australia-southeast1' 
+  REPOSITORY: 'dataeng-container-repo' 
+  IMAGE: 'robpearson-demo'
+
+  OCTOPUS_URL: ${{ secrets.OCTOPUS_URL }} 
+  OCTOPUS_API_KEY: ${{ secrets.OCTOPUS_API_KEY }} 
+  OCTOPUS_SPACE: 'FinTech' 
+
+jobs:
+  setup-build-publish-deploy:
+    name: 'Setup, Build, Publish, and Deploy'
+    runs-on: 'ubuntu-latest'
+    environment: 'production'
+
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+      - name: 'Checkout'
+        uses: 'actions/checkout@v4' 
+
+      # Authenticate DockerHub
+      - name: 'Docker Auth'
+        uses: 'docker/login-action@v3' 
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # Build the Docker image
+      - name: 'Build and push Docker container'
+        run: |-
+          DOCKER_TAG="${IMAGE}:1.0.${GITHUB_RUN_NUMBER}"
+          docker build --tag "octopussolutionsengineering/${DOCKER_TAG}" .
+          docker push "octopussolutionsengineering/${DOCKER_TAG}"
+
+      - name: Push build information to Octopus Deploy 🐙
+        uses: OctopusDeploy/push-build-information-action@v3
+        with:
+          packages: 'robpearson-demo'
+          version: '1.0.${{github.run_number}}'
+
+      - name: Create a release in Octopus Deploy 🐙
+        uses: OctopusDeploy/create-release-action@v3
+        with:
+          project: 'GCP Dataflow'
+          git_ref: ${{ github.head_ref || github.ref_name }} 
