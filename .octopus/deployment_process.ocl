@@ -35,6 +35,17 @@ step "deploy-custom-image-to-dataflow" {
             feed = "docker-hub"
             image = "octopusdeploy/worker-tools:6.3.0-ubuntu.22.04"
         }
+
+        packages "robpearson-demo" {
+            acquisition_location = "NotAcquired"
+            feed = "docker-hub"
+            package_id = "octopussolutionsengineering/robpearson-demo"
+            properties = {
+                Extract = "False"
+                Purpose = ""
+                SelectionMode = "immediate"
+            }
+        }
     }
 }
 
