@@ -12,6 +12,10 @@ env:
   REPOSITORY: 'dataeng-container-repo' 
   IMAGE: 'robpearson-demo'
 
+  OCTOPUS_URL: ${{ secrets.OCTOPUS_URL }} 
+  OCTOPUS_API_KEY: ${{ secrets.OCTOPUS_API_KEY }} 
+  OCTOPUS_SPACE: 'FinTech' 
+
 jobs:
   setup-build-publish-deploy:
     name: 'Setup, Build, Publish, and Deploy'
