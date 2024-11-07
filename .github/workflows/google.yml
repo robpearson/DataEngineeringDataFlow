@@ -31,7 +31,7 @@
 #
 # 5. Change the values in the "env" block to match your values.
 
-name: 'Build and Push to GCP. Create Octopus Release'
+name: 'Build and Push to GCP+Octopus'
 
 on:
   push:
