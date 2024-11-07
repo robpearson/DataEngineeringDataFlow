@@ -54,3 +54,4 @@ jobs:
         uses: OctopusDeploy/create-release-action@v3
         with:
           project: 'GCP Dataflow'
+          git_ref: ${{ github.head_ref || github.ref_name }} 
