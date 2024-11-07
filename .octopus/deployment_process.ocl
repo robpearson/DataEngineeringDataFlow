@@ -1,0 +1,58 @@
+step "production-approval" {
+    name = "Production Approval"
+
+    action {
+        action_type = "Octopus.Manual"
+        environments = ["production"]
+        properties = {
+            Octopus.Action.Manual.BlockConcurrentDeployments = "False"
+            Octopus.Action.Manual.Instructions = "Has this changed been approved?"
+            Octopus.Action.Manual.ResponsibleTeamIds = "global/octopus-managers"
+            Octopus.Action.RunOnServer = "false"
+        }
+    }
+}
+
+step "deploy-custom-image-to-dataflow" {
+    name = "Deploy Custom Image to Dataflow"
+
+    action {
+        action_type = "Octopus.GoogleCloudScripting"
+        properties = {
+            Octopus.Action.GoogleCloud.ImpersonateServiceAccount = "False"
+            Octopus.Action.GoogleCloud.Project = "#{GCP.Project}"
+            Octopus.Action.GoogleCloud.Region = "#{GCP.Region}"
+            Octopus.Action.GoogleCloud.UseVMServiceAccount = "True"
+            Octopus.Action.GoogleCloud.Zone = "#{GCP.Zone}"
+            Octopus.Action.Script.ScriptBody = "gcloud --version"
+            Octopus.Action.Script.ScriptSource = "Inline"
+            Octopus.Action.Script.Syntax = "PowerShell"
+            OctopusUseBundledTooling = "False"
+        }
+        worker_pool = "hosted-ubuntu"
+
+        container {
+            feed = "docker-hub"
+            image = "octopusdeploy/worker-tools:6.3.0-ubuntu.22.04"
+        }
+    }
+}
+
+step "notify-team" {
+    name = "Notify team"
+
+    action {
+        environments = ["production"]
+        properties = {
+            Octopus.Action.Template.Id = "ActionTemplates-3887"
+            Octopus.Action.Template.Version = "15"
+            ssn_Channel = "#{Slack.Webhook.Channel}"
+            ssn_Color = "good"
+            ssn_HookUrl = "#{Slack.Webhook.Url}"
+            ssn_IconUrl = "https://octopus.com/content/resources/favicon.png"
+            ssn_Title = "#{Slack.Webhook.Message}"
+            ssn_Username = "Octopus Deploy"
+        }
+        worker_pool = "hosted-windows"
+    }
+}
