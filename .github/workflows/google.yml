@@ -10,7 +10,7 @@ env:
   PROJECT_ID: 'robpearson-demo' 
   GAR_LOCATION: 'australia-southeast1' 
   REPOSITORY: 'dataeng-container-repo' 
-  IMAGE: 'custom-dataflow'
+  IMAGE: 'robpearson-demo'
 
 jobs:
   setup-build-publish-deploy:
@@ -37,4 +37,5 @@ jobs:
       - name: 'Build and push Docker container'
         run: |-
           DOCKER_TAG="${IMAGE}:1.0.${GITHUB_RUN_NUMBER}"
-          docker build --tag "${DOCKER_TAG}" .
+          docker build --tag "octopussolutionsengineering/${DOCKER_TAG}" .
+          docker push "octopussolutionsengineering/${DOCKER_TAG}"
