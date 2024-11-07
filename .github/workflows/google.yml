@@ -47,7 +47,7 @@ jobs:
       - name: Push build information to Octopus Deploy 🐙
         uses: OctopusDeploy/push-build-information-action@v3
         with:
-          packages: 'robpearson-demo'
+          packages: 'octopussolutionsengineering/robpearson-demo'
           version: '1.0.${{github.run_number}}'
 
       - name: Create a release in Octopus Deploy 🐙
