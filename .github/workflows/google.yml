@@ -49,3 +49,8 @@ jobs:
         with:
           packages: 'robpearson-demo'
           version: '1.0.${{github.run_number}}'
+
+      - name: Create a release in Octopus Deploy 🐙
+        uses: OctopusDeploy/create-release-action@v3
+        with:
+          project: 'GCP Dataflow'
