@@ -1,0 +1,22 @@
+variable "GCP.Account" {
+    type = "GoogleCloudAccount"
+
+    value "gcp-developer-playground" {
+        environment = ["development", "test"]
+    }
+
+    value "gcp-developer-playground" {
+        description = ""
+        environment = ["production"]
+    }
+}
+
+variable "GCP.Project" {
+    value "robpearson-demo" {
+        environment = ["development", "test"]
+    }
+
+    value "robpearson-demo" {
+        environment = ["production"]
+    }
+}
