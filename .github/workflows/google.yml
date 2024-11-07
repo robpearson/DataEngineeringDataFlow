@@ -37,10 +37,5 @@ jobs:
       - name: 'Build and push Docker container'
         run: |-
           DOCKER_TAG="${IMAGE}:1.0.${GITHUB_RUN_NUMBER}"
-
-          docker build \
-            --tag "${DOCKER_TAG}" \
-            .
-
-          docker push "${DOCKER_TAG}"
-
+          docker build --tag "${DOCKER_TAG}" .
+          docker push "octopussolutionsengineering/robpearson-demo:${DOCKER_TAG}"
