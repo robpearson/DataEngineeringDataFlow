@@ -22,8 +22,9 @@ step "deploy-custom-image-to-dataflow" {
             Octopus.Action.GoogleCloud.ImpersonateServiceAccount = "False"
             Octopus.Action.GoogleCloud.Project = "#{GCP.Project}"
             Octopus.Action.GoogleCloud.Region = "#{GCP.Region}"
-            Octopus.Action.GoogleCloud.UseVMServiceAccount = "True"
+            Octopus.Action.GoogleCloud.UseVMServiceAccount = "False"
             Octopus.Action.GoogleCloud.Zone = "#{GCP.Zone}"
+            Octopus.Action.GoogleCloudAccount.Variable = "GCP.Account"
             Octopus.Action.Script.ScriptBody = "gcloud --version"
             Octopus.Action.Script.ScriptSource = "Inline"
             Octopus.Action.Script.Syntax = "PowerShell"
@@ -34,6 +35,17 @@ step "deploy-custom-image-to-dataflow" {
         container {
             feed = "docker-hub"
             image = "octopusdeploy/worker-tools:6.3.0-ubuntu.22.04"
+        }
+
+        packages "robpearson-demo" {
+            acquisition_location = "NotAcquired"
+            feed = "docker-hub"
+            package_id = "octopussolutionsengineering/robpearson-demo"
+            properties = {
+                Extract = "False"
+                Purpose = ""
+                SelectionMode = "immediate"
+            }
         }
     }
 }
