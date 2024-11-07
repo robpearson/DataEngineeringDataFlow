@@ -47,5 +47,5 @@ jobs:
       - name: Push build information to Octopus Deploy 🐙
         uses: OctopusDeploy/push-build-information-action@v3
         with:
-          packages: '${IMAGE}'
-          version: '1.0.${GITHUB_RUN_NUMBER}'
+          packages: "${IMAGE}"
+          version: "1.0.${GITHUB_RUN_NUMBER}"
