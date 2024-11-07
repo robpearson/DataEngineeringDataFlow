@@ -39,3 +39,10 @@ jobs:
           DOCKER_TAG="${IMAGE}:1.0.${GITHUB_RUN_NUMBER}"
           docker build --tag "octopussolutionsengineering/${DOCKER_TAG}" .
           docker push "octopussolutionsengineering/${DOCKER_TAG}"
+
+      - name: Push build information to Octopus Deploy 🐙
+        uses: OctopusDeploy/push-build-information-action@v3
+        with:
+          packages: |
+            <${IMAGE}>
+          version: '1.0.${GITHUB_RUN_NUMBER}'
