@@ -20,3 +20,43 @@ variable "GCP.Project" {
         environment = ["production"]
     }
 }
+
+variable "Demo.Database.ConnectionString" {
+    value "Demo.Server=#{Demo.Database.Server};Initial Catalog=#{Demo.Database.Name};Persist Security Info=False;User ID=#{OctoFX.Database.User};Password=#{OctoFX.Database.UserPassword};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" {}
+}
+
+variable "Demo.Database.Server" {
+    value "tcp:robpearson-dev.cloud.google.com" {
+        environment = ["development"]
+    }
+
+    value "tcp:robpearson-test.cloud.google.com" {
+        environment = ["test"]
+    }
+
+    value "tcp:robpearson-prod.cloud.google.com" {
+        environment = ["production"]
+    }
+}
+
+variable "Demo.Database.Role" {
+    value "db_owern" {}
+}
+
+variable "Demo.Database.Name" {
+    value "demo-development" {
+        environment = ["development"]
+    }
+
+    value "demo-test" {
+        environment = ["test"]
+    }
+
+    value "demo-production" {
+        environment = ["production"]
+    }
+}
+
+variable "Demo.Database.Admin.UserName" {
+    value "octoadmin" {}
+}
